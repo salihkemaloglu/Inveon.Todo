@@ -1,31 +1,62 @@
-﻿@{
+﻿
+@model IEnumerable<Inveon.TODO.Models.TodoModel>
+@{
     ViewBag.Title = "Home Page";
 }
-
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class="container col-lg-12" style="margin-top:7pc">
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="todo">Todo:</label>
+            <input type="text" class="form-control" id="todo" placeholder="Todo..." name="todo">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Todo Datetime:</label>
+            <div class="input-group date" id="datetimepicker1"><input type="text" class="form-control" id="datetimepicker" /><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>
+        </div>
+        <button style="float:right;" type="button" class="btn btn-info add-new" id="btnAddTodo" onclick="addTodo(this)">Add Todo</button>
+    </form>
 </div>
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-8"><h2>Todo List</h2></div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="col-lg-3">Todo</th>
+                    <th>Todo Datetime</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    var todoId = "todo" + item.ID;
+                    var todoDatetimeId = "todoDatetime" + item.ID;
+                    <tr>
+                        <td id="@todoId">@item.Todo</td>
+                        <td id="@todoDatetimeId">@item.TodoDatetime</td>
+                        <td>
+                            <a class="add" title="Update Todo" data-toggle="tooltip" style="cursor:pointer;display:none" id="@item.ID" onclick="UpdateTodo(this)"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit" title="Edit Todo" style="cursor:pointer;" id="@item.ID"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete" title="Delete Todo" style="cursor:pointer;" id="@item.ID"><i class="material-icons" >&#xE872;</i></a>
+                            <a href="@Url.Action("index","Home")" title="Cancel Todo" class="cancel" style="cursor:pointer;display:none;
+    margin-top: -29px;margin-left:28px" data-toggle="tooltip"><i class="material-icons cancel">&#xe5c9;</i></a>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
     </div>
 </div>
+@section scripts{
+    <script src="~/Scripts/Todo.js"></script>
+}
+
