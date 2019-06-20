@@ -9,6 +9,6 @@ namespace Inveon.TODO.Models
     {
         public int ID { get; set; }
         public string Todo { get; set; }
-        public string TodoDatetime { get; set; }
+        public DateTime TodoDatetime { get; set; }
     }
 }

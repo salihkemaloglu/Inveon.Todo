@@ -2,17 +2,19 @@
     $('[data-toggle="tooltip"]').tooltip();
     var actions = $("table td:last-child").html();
 
-    // Edit row on edit button click
+    // Edit Todo on edit button click
     $(document).on("click", ".edit", function (event) {
         var todoId = "todoUpdate" + $(this).attr("id"); 
         var todoDatetimeId = "todoDatetimeUpdate" + $(this).attr("id");
         var check = true;
+        var date = "";
         $(this).parents("tr").find("td:not(:last-child)").each(function () {
             if (check) {
                 $(this).html('<input type="text" class="form-control" id="' + todoId + '" value="' + $(this).text() + '">');
                 check = false;
             } else {
-                $(this).html('<input type="text" class="form-control" id="' + todoDatetimeId + '" value="' + $(this).text() + '">');
+                date = $(this).text();
+                $(this).html('<div class="input-group date" id="datetimepicker2"><input type="text" class="form-control" id="' + todoDatetimeId + '" /><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>');
             }
         });
         $(this).parents("tr").find(".delete").css('display', 'none');
@@ -20,10 +22,13 @@
 
         $(this).parents("tr").find(".add").css('display', 'block');
         $(this).parents("tr").find(".cancel").css('display', 'block');
-
+        $('#datetimepicker2').datetimepicker({
+            defaultDate: new Date(date)
+        });
+         
     });
 
-    // Delete row on delete button click
+    // Delete Todo on delete button click
     $(document).on("click", ".delete", function () {
         var TodoModel = {
             ID: $(this).attr("id"),
@@ -44,11 +49,12 @@
             }
         });   
     });
-   
+    SetAndUpdateCountdown();
     $('#datetimepicker1').datetimepicker();
-});
 
-function addTodo() {
+});
+// Add new todo 
+function AddTodo() {
     $("#btnAddTodo").attr("disabled", true);
     if ($('#todo').val() == "")
         alert("Todo can not be empty!")
@@ -66,12 +72,7 @@ function addTodo() {
             data: TodoModel,
             success: function (data) {
                 if (data == "true") {
-                    var row = '<tr>' +
-                        '<td>' + TodoModel.Todo + '</td>' +
-                        '<td>' + TodoModel.TodoDatetime + '</td>' +
-                        ' <td><a class="add" title="Update Todo" data-toggle="tooltip" style="cursor:pointer;display:none" id="@item.ID" onclick="UpdateTodo(this)" > <i class="material-icons">&#xE03B;</i></a ><a class="edit" title="Edit Todo" style="cursor:pointer;" id="@item.ID"><i class="material-icons">&#xE254;</i></a><a class="delete" title="Delete Todo" style="cursor:pointer;" id="@item.ID"><i class="material-icons" >&#xE872;</i></a> <a href="@Url.Action("index","Home")" title="Cancel Todo" class="cancel" style="cursor:pointer;display:none;margin-top:-29px;margin-left:28px"><i class="material-icons cancel">&#xe5c9;</i></a></td >' +
-                        '</tr>';
-                    $("table").append(row);
+                    location.reload();
                 }
                 else {
                     alert("Todo coult not be inserted!=>" + data);
@@ -82,7 +83,7 @@ function addTodo() {
     }
     $("#btnAddTodo").attr("disabled", false);
 }
-
+// Update Todo
 function UpdateTodo(event) {
     var todoId = "#todoUpdate" + $(event).attr("id");
     var todoDatetimeId = "#todoDatetimeUpdate" + $(event).attr("id");
@@ -114,6 +115,7 @@ function UpdateTodo(event) {
         });
     }
 }
+// Delete Todo
 function DeleteTodo() {
     $("#btnAddTodo").attr("disabled", true);
     if ($('#todo').val() == "")
@@ -132,6 +134,7 @@ function DeleteTodo() {
             data: TodoModel,
             success: function (data) {
                 if (data == "true") {
+                   
                     location.reload();
                 }
                 else {
@@ -142,4 +145,11 @@ function DeleteTodo() {
         });
     }
     $("#btnAddTodo").attr("disabled", false);
+}
+// Format string datetime to Date object
+function formatDate(date_) {
+    var itemId = date_.substring(1, date_.length);
+    str = itemId.slice(0, -1);
+    var date = new Date(+str.replace(/\D/g, ''));
+    return date;
 }
