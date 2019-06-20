@@ -16,7 +16,7 @@ namespace Inveon.TODO.Controllers
         {
             if (System.Web.HttpContext.Current.Session["todos"] != null)
                 todos = JsonConvert.DeserializeObject<List<TodoModel>>(System.Web.HttpContext.Current.Session["todos"].ToString());
-            // Say Hello is an default example
+            // Say Hello is a default example
             if (todos.Count == 0)
             {
                 DateTime currentTime = DateTime.Now;

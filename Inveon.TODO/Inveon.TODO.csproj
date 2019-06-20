@@ -197,7 +197,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\datepicker.js" />
-    <Content Include="Scripts\Todo.js" />
+    <Content Include="Scripts\todo.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
